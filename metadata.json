@@ -1,0 +1,8 @@
+{
+  "name": "SurveillanceChat",
+  "description": "An AI-powered video surveillance assistant that allows users to search, summarize, and interact with camera feeds using natural language.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
