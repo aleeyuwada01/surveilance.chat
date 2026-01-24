@@ -1,0 +1,5 @@
+# Netlify Redirects for SPA Routing
+# This file is a fallback in case netlify.toml redirects don't work
+
+# Handle all routes - serve index.html for client-side routing
+/*    /index.html   200
