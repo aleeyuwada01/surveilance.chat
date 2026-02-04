@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ChatMessage, Camera, SurveillanceEvent, EventType } from '../types';
 import { Icons } from '../constants';
 import { analyzeVideoFrame } from '../services/geminiService';
-import { db } from '../utils/storage';
+import { supabaseDb } from '../utils/supabaseDb';
 
 interface ChatInterfaceProps {
   camera: Camera;
@@ -20,8 +20,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ camera, events, onCapture
 
   // Load persistent history for this camera
   useEffect(() => {
-    const history = db.messages.getByCamera(camera.id);
-    setMessages(history);
+    const loadHistory = async () => {
+      const history = await supabaseDb.messages.getByCamera(camera.id);
+      setMessages(history);
+    };
+    loadHistory();
   }, [camera.id]);
 
   useEffect(() => {
@@ -41,14 +44,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ camera, events, onCapture
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    const savedUserMsg = db.messages.add(userMsgInput);
-    setMessages(prev => [...prev, savedUserMsg]);
+    const savedUserMsg = await supabaseDb.messages.add(userMsgInput);
+    if (savedUserMsg) setMessages(prev => [...prev, savedUserMsg]);
     setInput('');
     setIsTyping(true);
 
     try {
       const frame = onCaptureFrame();
-      
+
       if (!frame) {
         let errorMsg = "SYSTEM ERROR: Node imagery inaccessible. ";
         if (camera.isExternal) {
@@ -56,21 +59,21 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ camera, events, onCapture
         } else {
           errorMsg += "Check CORS headers or buffer stability.";
         }
-        
-        const savedError = db.messages.add({
+
+        const savedError = await supabaseDb.messages.add({
           sessionId: `session-${camera.id}`,
           cameraId: camera.id,
           role: 'assistant',
           content: errorMsg,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
-        setMessages(prev => [...prev, savedError]);
+        if (savedError) setMessages(prev => [...prev, savedError]);
         setIsTyping(false);
         return;
       }
 
       const result = await analyzeVideoFrame(text, frame, camera, events);
-      
+
       const assistantMsgInput: Omit<ChatMessage, keyof import('../types').BaseEntity> = {
         sessionId: `session-${camera.id}`,
         cameraId: camera.id,
@@ -81,15 +84,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ camera, events, onCapture
         summary: result.summary
       };
 
-      const savedAssistantMsg = db.messages.add(assistantMsgInput);
-      setMessages(prev => [...prev, savedAssistantMsg]);
+      const savedAssistantMsg = await supabaseDb.messages.add(assistantMsgInput);
+      if (savedAssistantMsg) setMessages(prev => [...prev, savedAssistantMsg]);
 
       if (result.detectedEntities?.length > 0) {
         onNewEvent({
           cameraId: camera.id,
           timestamp: new Date().toISOString(),
-          type: result.detectedEntities.includes('person') ? EventType.PERSON : 
-                result.detectedEntities.includes('vehicle') ? EventType.VEHICLE : EventType.MOTION,
+          type: result.detectedEntities.includes('person') ? EventType.PERSON :
+            result.detectedEntities.includes('vehicle') ? EventType.VEHICLE : EventType.MOTION,
           description: result.summary,
           confidence: result.confidence.toLowerCase() as any,
           entities: result.detectedEntities
@@ -97,22 +100,22 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ camera, events, onCapture
       }
 
     } catch (err: any) {
-      const savedError = db.messages.add({
+      const savedError = await supabaseDb.messages.add({
         sessionId: `session-${camera.id}`,
         cameraId: camera.id,
         role: 'assistant',
         content: "CRITICAL FAILURE: Intelligence synthesis interrupted. Re-establish node link.",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       });
-      setMessages(prev => [...prev, savedError]);
+      if (savedError) setMessages(prev => [...prev, savedError]);
     } finally {
       setIsTyping(false);
     }
   };
 
-  const clearHistory = () => {
+  const clearHistory = async () => {
     if (window.confirm("Confirm deletion of node analysis archive?")) {
-      db.messages.clear(camera.id);
+      await supabaseDb.messages.clear(camera.id);
       setMessages([]);
     }
   };
@@ -134,12 +137,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ camera, events, onCapture
         </div>
         <div className="flex items-center space-x-2">
           {messages.length > 0 && (
-            <button 
+            <button
               onClick={clearHistory}
               className="p-2 hover:bg-rose-500/10 text-secondary hover:text-rose-500 rounded-lg transition-colors mr-2"
               title="Wipe Session Archive"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
             </button>
           )}
           <div className={`w-2 h-2 rounded-full ${camera.isExternal ? 'bg-amber-500' : 'bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]'}`}></div>
@@ -221,12 +224,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ camera, events, onCapture
             disabled={camera.isExternal && messages.length > 0}
             className="w-full bg-background border border-border rounded-2xl px-6 py-5 text-sm font-bold focus:outline-none focus:border-blue-500 transition-all text-primary placeholder:text-secondary/40 pr-16 disabled:opacity-50"
           />
-          <button 
+          <button
             type="submit"
             disabled={!input.trim() || isTyping || (camera.isExternal && messages.length > 0)}
             className="absolute right-3 p-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:grayscale text-white rounded-xl transition-all shadow-xl shadow-blue-500/20 active:scale-90"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 12h14M12 5l7 7-7 7" /></svg>
           </button>
         </form>
       </div>

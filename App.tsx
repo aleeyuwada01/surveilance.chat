@@ -16,7 +16,7 @@ import LandingPage from './components/LandingPage';
 import { Camera, SurveillanceEvent, DailySummary, User } from './types';
 import { generateSecurityAudit } from './services/geminiService';
 import { Icons, BRAND } from './constants';
-import { db } from './utils/storage';
+import { supabaseDb } from './utils/supabaseDb';
 import { supabase } from './utils/supabase';
 
 const App: React.FC = () => {
@@ -94,15 +94,19 @@ const App: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const loadUserData = () => {
-    const cameraList = db.cameras.getAll();
-    const eventList = db.events.getAll();
-    setCameras(cameraList);
-    setEvents(eventList);
-    if (cameraList.length > 0) {
-      setActiveCamera(cameraList[0]);
-    } else {
-      setActiveCamera(null);
+  const loadUserData = async () => {
+    try {
+      const cameraList = await supabaseDb.cameras.getAll();
+      const eventList = await supabaseDb.events.getAll();
+      setCameras(cameraList);
+      setEvents(eventList);
+      if (cameraList.length > 0) {
+        setActiveCamera(cameraList[0]);
+      } else {
+        setActiveCamera(null);
+      }
+    } catch (error) {
+      console.error('Error loading user data:', error);
     }
   };
 
@@ -121,15 +125,27 @@ const App: React.FC = () => {
     setIsProfileOpen(false);
   };
 
-  const handleNewEvent = (eventInput: any) => {
-    const savedEvent = db.events.add(eventInput);
-    setEvents(prev => [savedEvent, ...prev]);
+  const handleNewEvent = async (eventInput: any) => {
+    try {
+      const savedEvent = await supabaseDb.events.add(eventInput);
+      if (savedEvent) {
+        setEvents(prev => [savedEvent, ...prev]);
+      }
+    } catch (error) {
+      console.error('Error adding event:', error);
+    }
   };
 
-  const handleAddCamera = (camInput: any) => {
-    const savedCam = db.cameras.add(camInput);
-    setCameras(prev => [...prev, savedCam]);
-    if (!activeCamera) setActiveCamera(savedCam);
+  const handleAddCamera = async (camInput: any) => {
+    try {
+      const savedCam = await supabaseDb.cameras.add(camInput);
+      if (savedCam) {
+        setCameras(prev => [...prev, savedCam]);
+        if (!activeCamera) setActiveCamera(savedCam);
+      }
+    } catch (error) {
+      console.error('Error adding camera:', error);
+    }
   };
 
   const handleCaptureFrame = () => {
@@ -319,7 +335,7 @@ const App: React.FC = () => {
       <main className="flex-1 overflow-y-auto pt-12 pb-20 md:pt-8 md:pb-8 p-4 md:p-8 scroll-smooth bg-background transition-colors">
         <div className="max-w-[1600px] mx-auto animate-in fade-in duration-700">
           {activeTab === 'dashboard' && (
-            <Overview cameras={cameras} activeCamera={activeCamera} events={events} summary={currentSummary} onSelectCamera={selectCamera} onAddCameraClick={() => setIsAddCameraOpen(true)} />
+            <Overview cameras={cameras} activeCamera={activeCamera} events={events} summary={currentSummary} onSelectCamera={selectCamera} onAddCameraClick={() => setIsAddCameraOpen(true)} user={user} />
           )}
 
           {activeTab === 'monitor' && activeCamera && (
@@ -362,10 +378,10 @@ const App: React.FC = () => {
         </div>
       </main>
 
-      {isAdmin && <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />}
+      {isAdmin && <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} user={user} />}
       {isAdmin && <AddCameraModal isOpen={isAddCameraOpen} onClose={() => setIsAddCameraOpen(false)} onAdd={handleAddCamera} />}
 
-      <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} cameras={cameras} events={events} />
+      <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} cameras={cameras} events={events} user={user} />
       <ProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} user={user} onLogout={handleLogout} />
       <AuditReportModal isOpen={isAuditOpen} onClose={() => setIsAuditOpen(false)} data={auditData} isLoading={isAuditLoading} />
     </div>

@@ -1,12 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { Camera } from '../types';
-import { db } from '../utils/storage';
 
 interface AddCameraModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: (camera: Camera) => void;
+  onAdd: (camera: Partial<Camera>) => void;
 }
 
 const AddCameraModal: React.FC<AddCameraModalProps> = ({ isOpen, onClose, onAdd }) => {
@@ -73,20 +72,10 @@ const AddCameraModal: React.FC<AddCameraModalProps> = ({ isOpen, onClose, onAdd 
     const external = isExternalPlatform(url);
     const finalUrl = external ? getEmbedUrl(url) : url;
     const finalLocation = selectedLocation === 'Other' ? customLocation : selectedLocation;
-    const now = new Date().toISOString();
 
-    const newCamera: Camera = {
-      id: `cam-${Date.now()}`,
-      userId: db.getUserId() || '',
+    const newCamera: Partial<Camera> = {
       name,
       location: finalLocation || 'General',
-      status: 'online',
-      lastSeen: now,
-      createdAt: now,
-      updatedAt: now,
-      version: 1,
-      syncStatus: 'local_only',
-      isDeleted: false,
       thumbnail: `https://picsum.photos/seed/${name}/400/225`,
       streamUrl: finalUrl,
       isExternal: external,
@@ -110,15 +99,15 @@ const AddCameraModal: React.FC<AddCameraModalProps> = ({ isOpen, onClose, onAdd 
         <div className="p-8 border-b border-border flex items-center justify-between">
           <h2 className="text-2xl font-black uppercase italic">Register Node</h2>
           <button onClick={onClose} className="p-2 hover:bg-background rounded-full transition-colors text-gray-500 group">
-            <svg className="w-6 h-6 group-hover:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            <svg className="w-6 h-6 group-hover:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 space-y-6 overflow-y-auto max-h-[70vh] custom-scrollbar">
           <div className="flex justify-between items-center">
             <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500">Node Configuration</label>
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={loadDemo}
               className="text-[10px] font-black uppercase tracking-tighter text-blue-500 hover:text-blue-400 underline underline-offset-4"
             >
@@ -129,8 +118,8 @@ const AddCameraModal: React.FC<AddCameraModalProps> = ({ isOpen, onClose, onAdd 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Device Alias</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -163,8 +152,8 @@ const AddCameraModal: React.FC<AddCameraModalProps> = ({ isOpen, onClose, onAdd 
 
           <div>
             <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Network Stream URL</label>
-            <input 
-              type="url" 
+            <input
+              type="url"
               required
               value={url}
               onChange={(e) => setUrl(e.target.value)}
@@ -179,8 +168,8 @@ const AddCameraModal: React.FC<AddCameraModalProps> = ({ isOpen, onClose, onAdd 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Node Access Cipher (Password)</label>
-              <input 
-                type="password" 
+              <input
+                type="password"
                 value={nodePassword}
                 onChange={(e) => setNodePassword(e.target.value)}
                 placeholder="Optional cipher"
@@ -189,16 +178,16 @@ const AddCameraModal: React.FC<AddCameraModalProps> = ({ isOpen, onClose, onAdd 
             </div>
             <div>
               <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2">Clearance Required</label>
-              <select 
+              <select
                 value={clearanceRequired}
                 onChange={(e) => setClearanceRequired(parseInt(e.target.value))}
                 className="w-full bg-background border border-border rounded-xl px-4 py-3 outline-none focus:border-blue-500 transition-all text-sm font-bold"
               >
-                {[1,2,3,4,5].map(lvl => <option key={lvl} value={lvl}>Level {lvl}</option>)}
+                {[1, 2, 3, 4, 5].map(lvl => <option key={lvl} value={lvl}>Level {lvl}</option>)}
               </select>
             </div>
           </div>
-          
+
           <div className="pt-4 space-y-4">
             <button type="submit" disabled={!!urlError} className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:grayscale text-white font-black text-sm uppercase tracking-widest rounded-2xl transition-all shadow-xl shadow-blue-500/20 active:scale-[0.98]">
               Deploy Intelligence Node
