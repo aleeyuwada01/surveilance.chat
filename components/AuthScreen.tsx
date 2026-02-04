@@ -119,7 +119,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess, initialLoginStat
             )}
 
             <div>
-              <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-secondary mb-2 ml-1">Intelligence ID (Email)</label>
+              <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-secondary mb-2 ml-1">Email</label>
               <input
                 type="email"
                 value={email}
@@ -131,7 +131,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess, initialLoginStat
             </div>
 
             <div>
-              <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-secondary mb-2 ml-1">Access Cipher (Password)</label>
+              <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-secondary mb-2 ml-1">Password</label>
               <input
                 type="password"
                 value={password}
@@ -157,7 +157,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess, initialLoginStat
                 </div>
                 <span className="text-[9px] font-black uppercase tracking-widest text-secondary group-hover:text-primary transition-colors select-none">Remember Operative</span>
               </label>
-              <button type="button" className="text-[9px] font-black uppercase tracking-widest text-blue-500/60 hover:text-blue-500 transition-colors">Forgot Cipher?</button>
+              <button type="button" className="text-[9px] font-black uppercase tracking-widest text-blue-500/60 hover:text-blue-500 transition-colors">Forgot Password?</button>
             </div>
 
             {error && (
@@ -182,7 +182,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess, initialLoginStat
 
         <div className="mt-8 text-center space-y-1">
           <p className="text-[9px] md:text-[10px] text-secondary font-black uppercase tracking-[0.3em] opacity-30 px-4 leading-relaxed">
-            SurveillanceChat Core v1.0.0
+            SurveillanceChat
           </p>
         </div>
       </div>
