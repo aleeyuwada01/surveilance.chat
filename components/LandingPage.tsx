@@ -191,11 +191,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
                 <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-white">
                   Ask Surveillance.chat
                 </h2>
-                <p className="text-secondary leading-relaxed">
+                <p className="text-lg md:text-xl text-secondary leading-relaxed font-medium">
                   Let it explain to you in a detailed, timelined way (or summary if you prefer), what your cameras capture over any given time period.
                   Depending on your questions, it will pinpoint specific events and provide clear answers.
                 </p>
-                <p className="text-secondary leading-relaxed">
+                <p className="text-lg md:text-xl text-secondary leading-relaxed font-medium">
                   Even at <span className="text-blue-400 font-bold">x32 speed</span>, reviewing 24 hours of footage takes around 45 minutes.
                   <br />
                   <span className="text-white font-bold">Surveillance.chat</span> offers daily text summaries and intelligent search for quick retrieval of relevant footage.
@@ -218,11 +218,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
               <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-6 text-center">Contact Form</h3>
               <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
                 <div>
-                  <label className="block text-[10px] uppercase font-black tracking-widest text-secondary mb-2">Operative Name</label>
+                  <label className="block text-[10px] uppercase font-black tracking-widest text-secondary mb-2">Name</label>
                   <input type="text" className="w-full bg-background border border-border rounded-xl p-3 text-sm text-primary focus:border-blue-500 outline-none transition-colors" placeholder="John Doe" />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-black tracking-widest text-secondary mb-2">Comms Address</label>
+                  <label className="block text-[10px] uppercase font-black tracking-widest text-secondary mb-2">Email</label>
                   <input type="email" className="w-full bg-background border border-border rounded-xl p-3 text-sm text-primary focus:border-blue-500 outline-none transition-colors" placeholder="email@secure.net" />
                 </div>
                 <div>
