@@ -77,7 +77,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
               {/* Mock Video Player */}
               <div className="flex-1 bg-black relative group">
                 <img
-                  src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2664&auto=format&fit=crop"
                   alt="Office CCTV"
                   className="w-full h-full object-cover opacity-80"
                 />

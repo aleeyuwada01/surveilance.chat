@@ -6,9 +6,10 @@ import { auth } from '../utils/storage';
 interface AuthScreenProps {
   onAuthSuccess: (user: any) => void;
   initialLoginState?: boolean;
+  onBack?: () => void;
 }
 
-const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess, initialLoginState = true }) => {
+const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess, initialLoginState = true, onBack }) => {
   const [isLogin, setIsLogin] = useState(initialLoginState);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -63,6 +64,17 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess, initialLoginStat
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4 md:p-6 relative overflow-hidden">
+      {/* Back to Home Link */}
+      {onBack && (
+        <button
+          onClick={onBack}
+          className="absolute top-6 left-6 flex items-center space-x-2 text-secondary hover:text-primary transition-colors z-50 group"
+        >
+          <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+          <span className="text-xs font-black uppercase tracking-widest">Return to Home</span>
+        </button>
+      )}
+
       {/* Static Grid Background */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
         <div className="absolute inset-0 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>

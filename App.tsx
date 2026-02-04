@@ -134,6 +134,10 @@ const App: React.FC = () => {
     setShowLanding(false);
   };
 
+  const handleBackToHome = () => {
+    setShowLanding(true);
+  };
+
   if (isBooting) {
     return (
       <div className="h-screen w-screen flex flex-col items-center justify-center bg-background text-primary">
@@ -159,7 +163,7 @@ const App: React.FC = () => {
     if (showLanding) {
       return <LandingPage onLogin={handleLoginClick} onSignup={handleSignupClick} />;
     }
-    return <AuthScreen onAuthSuccess={handleAuthSuccess} initialLoginState={initialAuthMode} />;
+    return <AuthScreen onAuthSuccess={handleAuthSuccess} initialLoginState={initialAuthMode} onBack={handleBackToHome} />;
   }
 
   const isAdmin = user.role === 'admin';
