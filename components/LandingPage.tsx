@@ -185,6 +185,34 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
           </div>
 
 
+
+
+          {/* Details Section */}
+          <div className="mb-32">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6">
+                <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-white">
+                  Ask Surveillance.chat
+                </h2>
+                <p className="text-lg md:text-xl text-secondary leading-relaxed font-medium">
+                  Let it explain to you in a detailed, timelined way (or summary if you prefer), what your cameras capture over any given time period.
+                  Depending on your questions, it will pinpoint specific events and provide clear answers.
+                </p>
+                <p className="text-lg md:text-xl text-secondary leading-relaxed font-medium">
+                  Even at <span className="text-blue-400 font-bold">x32 speed</span>, reviewing 24 hours of footage takes around 45 minutes.
+                  <br />
+                  <span className="text-white font-bold">Surveillance.chat</span> offers daily text summaries and intelligent search for quick retrieval of relevant footage.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <FeatureCard icon={<Icons.Activity className="text-emerald-400" />} title="Daily Summaries" />
+                <FeatureCard icon={<Icons.Search className="text-blue-400" />} title="Smart Search" />
+                <FeatureCard icon={<Icons.Shield className="text-purple-400" />} title="Event Pinpointing" />
+                <FeatureCard icon={<Icons.Mic className="text-orange-400" />} title="Instant Answers" />
+              </div>
+            </div>
+          </div>
+
           {/* WhatsApp Integration Section */}
           <div className="mb-32">
             <div className="bg-gradient-to-br from-[#25D366]/10 to-[#128C7E]/10 rounded-[3rem] p-8 md:p-16 border border-[#25D366]/20 relative overflow-hidden group">
@@ -208,10 +236,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
 
                   <ul className="space-y-4">
                     {[
-                      "Instant Intruder Alerts",
                       "Daily Activity Summaries",
                       "Ask: 'Did the kids get home?'",
-                      "Request Live Snapshots"
+                      "Request Live Snapshots",
+                      "Check Activity"
                     ].map((item, i) => (
                       <li key={i} className="flex items-center space-x-3">
                         <div className="w-6 h-6 rounded-full bg-[#25D366]/20 flex items-center justify-center">
@@ -250,27 +278,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
                       {/* Chat Background Pattern */}
                       <div className="absolute inset-0 opacity-5 bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] bg-repeat"></div>
 
-                      <div className="bg-[#202c33] p-3 rounded-2xl rounded-tl-none self-start max-w-[85%] border border-border/50 text-xs text-[#e9edef] shadow-sm z-10">
-                        <span className="text-[10px] text-[#25D366] font-bold block mb-1">AI Assistant</span>
-                        Alert: Motion detected at Front Gate [Camera 01].
-                        <div className="mt-1 text-[9px] text-white/40 text-right">10:42 AM</div>
-                      </div>
-
                       <div className="bg-[#005c4b] p-3 rounded-2xl rounded-tr-none self-end max-w-[85%] text-xs text-[#e9edef] shadow-sm z-10">
-                        Is it a delivery?
-                        <div className="mt-1 text-[9px] text-[#25D366]/60 text-right">10:43 AM</div>
+                        Did the kids get home?
+                        <div className="mt-1 text-[9px] text-[#25D366]/60 text-right">3:40 PM</div>
                       </div>
 
                       <div className="bg-[#202c33] p-3 rounded-2xl rounded-tl-none self-start max-w-[85%] border border-border/50 text-xs text-[#e9edef] shadow-sm z-10">
                         <span className="text-[10px] text-[#25D366] font-bold block mb-1">AI Assistant</span>
-                        Yes. UPS Driver identified. Package left at door.
+                        Yes, recognized at 3:30 PM.
                         <br />
                         <div className="mt-2 h-20 bg-black/50 rounded-lg flex items-center justify-center border border-white/5">
                           <span className="text-[9px] text-white/50 flex items-center gap-1">
                             <Icons.Camera className="w-3 h-3" /> Image Preview
                           </span>
                         </div>
-                        <div className="mt-1 text-[9px] text-white/40 text-right">10:43 AM</div>
+                        <div className="mt-1 text-[9px] text-white/40 text-right">3:40 PM</div>
                       </div>
                     </div>
 
@@ -289,32 +311,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
 
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Details Section */}
-          <div className="mb-32">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="space-y-6">
-                <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-white">
-                  Ask Surveillance.chat
-                </h2>
-                <p className="text-lg md:text-xl text-secondary leading-relaxed font-medium">
-                  Let it explain to you in a detailed, timelined way (or summary if you prefer), what your cameras capture over any given time period.
-                  Depending on your questions, it will pinpoint specific events and provide clear answers.
-                </p>
-                <p className="text-lg md:text-xl text-secondary leading-relaxed font-medium">
-                  Even at <span className="text-blue-400 font-bold">x32 speed</span>, reviewing 24 hours of footage takes around 45 minutes.
-                  <br />
-                  <span className="text-white font-bold">Surveillance.chat</span> offers daily text summaries and intelligent search for quick retrieval of relevant footage.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <FeatureCard icon={<Icons.Activity className="text-emerald-400" />} title="Daily Summaries" />
-                <FeatureCard icon={<Icons.Search className="text-blue-400" />} title="Smart Search" />
-                <FeatureCard icon={<Icons.Shield className="text-purple-400" />} title="Event Pinpointing" />
-                <FeatureCard icon={<Icons.Mic className="text-orange-400" />} title="Instant Answers" />
               </div>
             </div>
           </div>
