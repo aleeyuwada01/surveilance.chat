@@ -7,6 +7,8 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background text-primary flex flex-col relative overflow-x-hidden font-sans">
       {/* Background Effects */}
@@ -21,7 +23,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
             <img src={BRAND.logo} alt="Logo" className="w-8 h-8 logo-tactical" />
             <span className="font-black italic uppercase tracking-tighter text-lg">{BRAND.name}</span>
           </div>
-          <div className="flex items-center space-x-4">
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center space-x-4">
             <button
               onClick={onLogin}
               className="text-sm font-bold uppercase tracking-widest text-secondary hover:text-white transition-colors"
@@ -35,7 +39,37 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
               Sign Up
             </button>
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            className="md:hidden text-white p-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+            )}
+          </button>
         </div>
+
+        {/* Mobile Nav Overlay */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-surface border-b border-white/5 p-4 flex flex-col space-y-4 shadow-2xl animate-in slide-in-from-top-4 duration-200">
+            <button
+              onClick={onLogin}
+              className="w-full py-3 text-center rounded-lg bg-surface border border-white/5 text-sm font-bold uppercase tracking-widest text-white hover:bg-white/5"
+            >
+              Login
+            </button>
+            <button
+              onClick={onSignup}
+              className="w-full py-3 text-center rounded-lg bg-blue-600 text-sm font-bold uppercase tracking-widest text-white hover:bg-blue-500 shadow-lg"
+            >
+              Sign Up
+            </button>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
@@ -75,9 +109,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
             <div className="absolute -inset-4 bg-gradient-to-b from-blue-500/20 to-purple-500/20 rounded-[3rem] blur-3xl opacity-50"></div>
             <div className="relative bg-surface border border-border rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row h-[600px] md:h-[500px]">
               {/* Mock Video Player */}
+              {/* Mock Video Player */}
               <div className="flex-1 bg-black relative group">
                 <img
-                  src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2664&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop"
                   alt="Office CCTV"
                   className="w-full h-full object-cover opacity-80"
                 />
@@ -90,8 +125,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
                 </div>
 
                 {/* Recognition Boxes (Simulated) */}
-                <div className="absolute top-1/3 left-1/4 w-32 h-48 border-2 border-emerald-500/50 rounded-lg flex flex-col justify-end p-2 md:group-hover:opacity-100 opacity-60 transition-opacity">
-                  <span className="bg-emerald-500 text-black text-[8px] font-bold px-1 py-0.5 self-start uppercase">Person 98%</span>
+                <div className="absolute top-1/3 left-1/4 w-32 h-10 border-2 border-emerald-500/30 rounded-lg flex items-center justify-center p-2 opacity-60">
+                  <div className="bg-emerald-500/20 backdrop-blur-sm px-2 py-1 rounded">
+                    <span className="text-emerald-400 text-[8px] font-bold uppercase tracking-widest">Sector Clear</span>
+                  </div>
                 </div>
               </div>
 
@@ -178,7 +215,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
             <div className="bg-surface/50 backdrop-blur-xl border border-border rounded-3xl p-8 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
 
-              <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-6 text-center">Contact Protocol</h3>
+              <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-6 text-center">Contact Form</h3>
               <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
                 <div>
                   <label className="block text-[10px] uppercase font-black tracking-widest text-secondary mb-2">Operative Name</label>
@@ -193,7 +230,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
                   <textarea rows={4} className="w-full bg-background border border-border rounded-xl p-3 text-sm text-primary focus:border-blue-500 outline-none transition-colors" placeholder="Inquiry details..."></textarea>
                 </div>
                 <button className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-widest text-xs rounded-xl shadow-lg hover:shadow-blue-500/25 transition-all">
-                  Transmit Message
+                  Send Message
                 </button>
               </form>
             </div>
@@ -205,8 +242,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
       {/* Footer */}
       <footer className="relative z-10 py-8 border-t border-white/5 bg-black/40 backdrop-blur-md">
         <div className="max-w-[1400px] mx-auto px-6 text-center">
-          <p className="text-secondary text-[10px] uppercase tracking-[0.2em] opacity-40">
-            © 2026 {BRAND.name}. Secure Infrastructure. All Rights Reserved.
+          <p className="text-white text-[10px] uppercase tracking-[0.2em]">
+            © 2026 {BRAND.name}. All Rights Reserved.
           </p>
         </div>
       </footer>
