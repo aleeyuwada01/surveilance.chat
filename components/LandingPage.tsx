@@ -184,6 +184,115 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
             </div>
           </div>
 
+
+          {/* WhatsApp Integration Section */}
+          <div className="mb-32">
+            <div className="bg-gradient-to-br from-[#25D366]/10 to-[#128C7E]/10 rounded-[3rem] p-8 md:p-16 border border-[#25D366]/20 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-[#25D366]/20 rounded-full blur-[100px] -mr-32 -mt-32"></div>
+
+              <div className="grid lg:grid-cols-2 gap-12 items-center relative z-10">
+                <div className="space-y-8">
+                  <div className="inline-flex items-center space-x-2 bg-[#25D366]/20 px-4 py-2 rounded-full border border-[#25D366]/30">
+                    <Icons.WhatsApp className="w-5 h-5 text-[#25D366]" />
+                    <span className="text-[#25D366] font-bold text-xs uppercase tracking-widest">Mobile Command Center</span>
+                  </div>
+
+                  <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white leading-[0.9]">
+                    Connect via <br />
+                    <span className="text-[#25D366]">WhatsApp</span>
+                  </h2>
+
+                  <p className="text-lg md:text-xl text-secondary leading-relaxed font-medium">
+                    No new apps to install. Chat directly with your surveillance system using the app you already use every day.
+                  </p>
+
+                  <ul className="space-y-4">
+                    {[
+                      "Instant Intruder Alerts",
+                      "Daily Activity Summaries",
+                      "Ask: 'Did the kids get home?'",
+                      "Request Live Snapshots"
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-center space-x-3">
+                        <div className="w-6 h-6 rounded-full bg-[#25D366]/20 flex items-center justify-center">
+                          <svg className="w-3 h-3 text-[#25D366]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
+                        </div>
+                        <span className="text-primary font-bold">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button className="px-8 py-4 bg-[#25D366] hover:bg-[#128C7E] text-white font-black uppercase tracking-widest text-sm rounded-xl transition-all shadow-[0_0_20px_rgba(37,211,102,0.3)] hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] flex items-center space-x-2">
+                    <Icons.WhatsApp className="w-5 h-5" />
+                    <span>Start Chat</span>
+                  </button>
+                </div>
+
+                {/* Mock Phone Interface */}
+                <div className="relative mx-auto lg:mr-0">
+                  <div className="w-[300px] h-[600px] bg-black rounded-[40px] border-[8px] border-surface shadow-2xl relative overflow-hidden">
+                    {/* Dynamic Island / Notch */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-20"></div>
+
+                    {/* Header */}
+                    <div className="bg-surface border-b border-border p-4 pt-10 flex items-center space-x-3 z-10 relative">
+                      <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center overflow-hidden">
+                        <img src={BRAND.logo} alt="Bot" className="w-5 h-5 object-contain" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-white text-xs font-bold">SurveillanceChat</div>
+                        <div className="text-[#25D366] text-[10px] font-medium">Online</div>
+                      </div>
+                    </div>
+
+                    {/* Chat Area */}
+                    <div className="bg-[#0b141a] h-full p-4 space-y-4 overflow-hidden flex flex-col justify-end pb-24 relative">
+                      {/* Chat Background Pattern */}
+                      <div className="absolute inset-0 opacity-5 bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] bg-repeat"></div>
+
+                      <div className="bg-[#202c33] p-3 rounded-2xl rounded-tl-none self-start max-w-[85%] border border-border/50 text-xs text-[#e9edef] shadow-sm z-10">
+                        <span className="text-[10px] text-[#25D366] font-bold block mb-1">AI Assistant</span>
+                        Alert: Motion detected at Front Gate [Camera 01].
+                        <div className="mt-1 text-[9px] text-white/40 text-right">10:42 AM</div>
+                      </div>
+
+                      <div className="bg-[#005c4b] p-3 rounded-2xl rounded-tr-none self-end max-w-[85%] text-xs text-[#e9edef] shadow-sm z-10">
+                        Is it a delivery?
+                        <div className="mt-1 text-[9px] text-[#25D366]/60 text-right">10:43 AM</div>
+                      </div>
+
+                      <div className="bg-[#202c33] p-3 rounded-2xl rounded-tl-none self-start max-w-[85%] border border-border/50 text-xs text-[#e9edef] shadow-sm z-10">
+                        <span className="text-[10px] text-[#25D366] font-bold block mb-1">AI Assistant</span>
+                        Yes. UPS Driver identified. Package left at door.
+                        <br />
+                        <div className="mt-2 h-20 bg-black/50 rounded-lg flex items-center justify-center border border-white/5">
+                          <span className="text-[9px] text-white/50 flex items-center gap-1">
+                            <Icons.Camera className="w-3 h-3" /> Image Preview
+                          </span>
+                        </div>
+                        <div className="mt-1 text-[9px] text-white/40 text-right">10:43 AM</div>
+                      </div>
+                    </div>
+
+                    {/* Input Area */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-[#202c33] p-3 flex items-center space-x-2">
+                      <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center">
+                        <svg className="w-3 h-3 text-[#8696a0]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 11h6v2h-6v6h-2v-6H4v-2h6V5h2v6z" /></svg>
+                      </div>
+                      <div className="flex-1 bg-[#2a3942] rounded-full h-8 px-3 flex items-center">
+                        <span className="text-[10px] text-[#8696a0]">Message...</span>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-[#00a884] flex items-center justify-center">
+                        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M1.101 21.757 23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z" /></svg>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Details Section */}
           <div className="mb-32">
             <div className="grid md:grid-cols-2 gap-12 items-center">
