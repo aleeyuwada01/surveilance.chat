@@ -21,6 +21,7 @@ import { db, auth } from './utils/storage';
 const App: React.FC = () => {
   const [isBooting, setIsBooting] = useState(true);
   const [showLanding, setShowLanding] = useState(true);
+  const [initialAuthMode, setInitialAuthMode] = useState(true); // true = login, false = signup
   const [user, setUser] = useState<User | null>(null);
   const [cameras, setCameras] = useState<Camera[]>([]);
   const [activeCamera, setActiveCamera] = useState<Camera | null>(null);
@@ -123,6 +124,16 @@ const App: React.FC = () => {
     }
   };
 
+  const handleLoginClick = () => {
+    setInitialAuthMode(true);
+    setShowLanding(false);
+  };
+
+  const handleSignupClick = () => {
+    setInitialAuthMode(false);
+    setShowLanding(false);
+  };
+
   if (isBooting) {
     return (
       <div className="h-screen w-screen flex flex-col items-center justify-center bg-background text-primary">
@@ -146,9 +157,9 @@ const App: React.FC = () => {
 
   if (!user) {
     if (showLanding) {
-      return <LandingPage onEnter={() => setShowLanding(false)} />;
+      return <LandingPage onLogin={handleLoginClick} onSignup={handleSignupClick} />;
     }
-    return <AuthScreen onAuthSuccess={handleAuthSuccess} />;
+    return <AuthScreen onAuthSuccess={handleAuthSuccess} initialLoginState={initialAuthMode} />;
   }
 
   const isAdmin = user.role === 'admin';
@@ -173,7 +184,7 @@ const App: React.FC = () => {
       <button
         onClick={() => !isLocked && (onClick ? onClick() : setActiveTab(id))}
         className={`relative p-3 rounded-xl md:rounded-2xl transition-all group ${isLocked ? 'opacity-30 cursor-not-allowed' :
-            isActive ? 'bg-blue-600 text-white shadow-lg' : 'text-secondary hover:text-blue-500 hover:bg-surface'
+          isActive ? 'bg-blue-600 text-white shadow-lg' : 'text-secondary hover:text-blue-500 hover:bg-surface'
           }`}
         title={isLocked ? `Clearance Required: LVL ${minClearance}` : label}
       >

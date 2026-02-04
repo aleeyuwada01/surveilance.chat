@@ -5,10 +5,11 @@ import { auth } from '../utils/storage';
 
 interface AuthScreenProps {
   onAuthSuccess: (user: any) => void;
+  initialLoginState?: boolean;
 }
 
-const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
-  const [isLogin, setIsLogin] = useState(true);
+const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess, initialLoginState = true }) => {
+  const [isLogin, setIsLogin] = useState(initialLoginState);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -20,7 +21,7 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
     // Check for remembered operative ID and Cipher on mount
     const savedOperative = localStorage.getItem('surveillance_remembered_id');
     const savedCipher = localStorage.getItem('surveillance_remembered_cipher');
-    
+
     if (savedOperative) {
       setEmail(savedOperative);
       setRememberMe(true);
@@ -76,13 +77,13 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
         <div className="bg-surface border border-border rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 shadow-2xl backdrop-blur-xl bg-surface/80">
           <div className="flex mb-8 bg-background p-1 rounded-2xl border border-border">
-            <button 
+            <button
               onClick={() => setIsLogin(true)}
               className={`flex-1 py-3 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${isLogin ? 'bg-blue-600 text-white shadow-lg' : 'text-secondary hover:text-primary'}`}
             >
               Access
             </button>
-            <button 
+            <button
               onClick={() => setIsLogin(false)}
               className={`flex-1 py-3 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${!isLogin ? 'bg-blue-600 text-white shadow-lg' : 'text-secondary hover:text-primary'}`}
             >
@@ -94,8 +95,8 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
             {!isLogin && (
               <div className="animate-in slide-in-from-top-2 duration-300">
                 <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-secondary mb-2 ml-1">Personnel Name</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full bg-background border border-border rounded-xl px-4 md:px-5 py-3 md:py-4 outline-none focus:border-blue-500 transition-all text-sm font-bold text-primary"
@@ -107,8 +108,8 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
             <div>
               <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-secondary mb-2 ml-1">Intelligence ID (Email)</label>
-              <input 
-                type="email" 
+              <input
+                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-background border border-border rounded-xl px-4 md:px-5 py-3 md:py-4 outline-none focus:border-blue-500 transition-all text-sm font-bold text-primary"
@@ -119,8 +120,8 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
 
             <div>
               <label className="block text-[9px] md:text-[10px] font-black uppercase tracking-widest text-secondary mb-2 ml-1">Access Cipher (Password)</label>
-              <input 
-                type="password" 
+              <input
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-background border border-border rounded-xl px-4 md:px-5 py-3 md:py-4 outline-none focus:border-blue-500 transition-all text-sm font-bold text-primary"
@@ -130,17 +131,17 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
             </div>
 
             <div className="flex items-center justify-between px-1">
-              <label 
+              <label
                 className="flex items-center space-x-2 cursor-pointer group"
                 onClick={(e) => {
                   e.preventDefault();
                   setRememberMe(!rememberMe);
                 }}
               >
-                <div 
+                <div
                   className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${rememberMe ? 'bg-blue-600 border-blue-600 shadow-[0_0_8px_rgba(59,130,246,0.3)]' : 'border-border bg-background'}`}
                 >
-                  {rememberMe && <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7"/></svg>}
+                  {rememberMe && <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7" /></svg>}
                 </div>
                 <span className="text-[9px] font-black uppercase tracking-widest text-secondary group-hover:text-primary transition-colors select-none">Remember Operative</span>
               </label>
@@ -153,8 +154,8 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess }) => {
               </div>
             )}
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={isLoading}
               className="w-full py-4 md:py-5 bg-blue-600 hover:bg-blue-700 text-white font-black text-[10px] md:text-xs uppercase tracking-[0.2em] rounded-2xl transition-all shadow-xl shadow-blue-500/20 active:scale-[0.98] flex items-center justify-center"
             >
