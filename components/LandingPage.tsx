@@ -290,13 +290,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
                       </div>
 
                       <div className="bg-[#005c4b] p-3 rounded-2xl rounded-tr-none self-end max-w-[85%] text-xs text-[#e9edef] shadow-sm z-10">
-                        Did they lock the door?
+                        Check Backyard Camera
                         <div className="mt-1 text-[9px] text-[#25D366]/60 text-right">3:41 PM</div>
                       </div>
 
                       <div className="bg-[#202c33] p-3 rounded-2xl rounded-tl-none self-start max-w-[85%] border border-border/50 text-xs text-[#e9edef] shadow-sm z-10">
                         <span className="text-[10px] text-[#25D366] font-bold block mb-1">AI Assistant</span>
-                        Yes. Smart lock engaged at 3:32 PM.
+                        Backyard Camera: All clear. No movement detected.
                         <div className="mt-1 text-[9px] text-white/40 text-right">3:41 PM</div>
                       </div>
                     </div>
