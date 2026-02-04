@@ -16,7 +16,8 @@ import LandingPage from './components/LandingPage';
 import { Camera, SurveillanceEvent, DailySummary, User } from './types';
 import { generateSecurityAudit } from './services/geminiService';
 import { Icons, BRAND } from './constants';
-import { db, auth } from './utils/storage';
+import { db } from './utils/storage';
+import { supabase } from './utils/supabase';
 
 const App: React.FC = () => {
   const [isBooting, setIsBooting] = useState(true);
@@ -49,14 +50,48 @@ const App: React.FC = () => {
     const root = window.document.documentElement;
     root.classList.add('dark');
 
-    // Immediate auth check, no artificial delay
-    const currentUser = auth.getCurrentUser();
-    if (currentUser) {
-      setUser(currentUser);
-      loadUserData();
-      setShowLanding(false); // Skip landing if already logged in
-    }
-    setIsBooting(false);
+    // Check for existing Supabase session
+    const initAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
+          role: 'admin',
+          clearanceLevel: 5,
+          createdAt: session.user.created_at || new Date().toISOString()
+        });
+        loadUserData();
+        setShowLanding(false);
+      }
+      setIsBooting(false);
+    };
+
+    initAuth();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        setUser(null);
+        setCameras([]);
+        setEvents([]);
+        setActiveCamera(null);
+        setActiveTab('dashboard');
+      } else if (event === 'SIGNED_IN' && session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
+          role: 'admin',
+          clearanceLevel: 5,
+          createdAt: session.user.created_at || new Date().toISOString()
+        });
+        loadUserData();
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const loadUserData = () => {
@@ -76,8 +111,8 @@ const App: React.FC = () => {
     loadUserData();
   };
 
-  const handleLogout = () => {
-    auth.logout();
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
     setCameras([]);
     setEvents([]);

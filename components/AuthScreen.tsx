@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Icons, BRAND } from '../constants';
-import { auth } from '../utils/storage';
+import { supabase } from '../utils/supabase';
 
 interface AuthScreenProps {
   onAuthSuccess: (user: any) => void;
@@ -19,16 +19,11 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess, initialLoginStat
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Check for remembered operative ID and Cipher on mount
-    const savedOperative = localStorage.getItem('surveillance_remembered_id');
-    const savedCipher = localStorage.getItem('surveillance_remembered_cipher');
-
-    if (savedOperative) {
-      setEmail(savedOperative);
+    // Check for remembered email on mount
+    const savedEmail = localStorage.getItem('surveillance_remembered_email');
+    if (savedEmail) {
+      setEmail(savedEmail);
       setRememberMe(true);
-      if (savedCipher) {
-        setPassword(savedCipher);
-      }
     }
   }, []);
 
@@ -38,23 +33,48 @@ const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthSuccess, initialLoginStat
     setIsLoading(true);
 
     try {
-      // Persistence Logic: One switch for both credentials
+      // Persistence Logic for email
       if (rememberMe) {
-        localStorage.setItem('surveillance_remembered_id', email);
-        localStorage.setItem('surveillance_remembered_cipher', password);
+        localStorage.setItem('surveillance_remembered_email', email);
       } else {
-        localStorage.removeItem('surveillance_remembered_id');
-        localStorage.removeItem('surveillance_remembered_cipher');
+        localStorage.removeItem('surveillance_remembered_email');
       }
 
-      let user;
       if (isLogin) {
-        user = auth.login(email, password);
+        // Supabase Login
+        const { data, error: authError } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+        if (authError) throw authError;
+        if (data.user) {
+          onAuthSuccess({
+            id: data.user.id,
+            email: data.user.email,
+            name: data.user.user_metadata?.name || email.split('@')[0],
+            role: 'admin'
+          });
+        }
       } else {
+        // Supabase Signup
         if (!name) throw new Error("Name is required.");
-        user = auth.signup(name, email, password);
+        const { data, error: authError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { name }
+          }
+        });
+        if (authError) throw authError;
+        if (data.user) {
+          onAuthSuccess({
+            id: data.user.id,
+            email: data.user.email,
+            name: name,
+            role: 'admin'
+          });
+        }
       }
-      onAuthSuccess(user);
     } catch (err: any) {
       setError(err.message);
     } finally {
