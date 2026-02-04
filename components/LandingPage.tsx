@@ -286,13 +286,18 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
                       <div className="bg-[#202c33] p-3 rounded-2xl rounded-tl-none self-start max-w-[85%] border border-border/50 text-xs text-[#e9edef] shadow-sm z-10">
                         <span className="text-[10px] text-[#25D366] font-bold block mb-1">AI Assistant</span>
                         Yes, recognized at 3:30 PM.
-                        <br />
-                        <div className="mt-2 h-20 bg-black/50 rounded-lg flex items-center justify-center border border-white/5">
-                          <span className="text-[9px] text-white/50 flex items-center gap-1">
-                            <Icons.Camera className="w-3 h-3" /> Image Preview
-                          </span>
-                        </div>
                         <div className="mt-1 text-[9px] text-white/40 text-right">3:40 PM</div>
+                      </div>
+
+                      <div className="bg-[#005c4b] p-3 rounded-2xl rounded-tr-none self-end max-w-[85%] text-xs text-[#e9edef] shadow-sm z-10">
+                        Did they lock the door?
+                        <div className="mt-1 text-[9px] text-[#25D366]/60 text-right">3:41 PM</div>
+                      </div>
+
+                      <div className="bg-[#202c33] p-3 rounded-2xl rounded-tl-none self-start max-w-[85%] border border-border/50 text-xs text-[#e9edef] shadow-sm z-10">
+                        <span className="text-[10px] text-[#25D366] font-bold block mb-1">AI Assistant</span>
+                        Yes. Smart lock engaged at 3:32 PM.
+                        <div className="mt-1 text-[9px] text-white/40 text-right">3:41 PM</div>
                       </div>
                     </div>
 
