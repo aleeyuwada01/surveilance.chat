@@ -274,7 +274,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
                     </div>
 
                     {/* Chat Area */}
-                    <div className="bg-[#0b141a] h-full p-4 space-y-4 overflow-hidden flex flex-col justify-end pb-24 relative">
+                    <div className="bg-[#0b141a] h-full p-4 space-y-4 overflow-hidden flex flex-col justify-start pb-24 relative">
                       {/* Chat Background Pattern */}
                       <div className="absolute inset-0 opacity-5 bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] bg-repeat"></div>
 
