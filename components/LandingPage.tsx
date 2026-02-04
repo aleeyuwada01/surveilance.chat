@@ -8,21 +8,42 @@ interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
   return (
-    <div className="min-h-screen bg-background text-primary flex flex-col relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-background text-primary flex flex-col relative overflow-x-hidden font-sans">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(10,14,20,0.9),rgba(10,14,20,0.95)),url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center bg-fixed z-0" />
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-0 mix-blend-overlay" />
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:50px_50px] z-0" />
 
+      {/* Navigation Bar */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
+        <div className="max-w-[1400px] mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={onLogin}>
+            <img src={BRAND.logo} alt="Logo" className="w-8 h-8 logo-tactical" />
+            <span className="font-black italic uppercase tracking-tighter text-lg">{BRAND.name}</span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={onLogin}
+              className="text-sm font-bold uppercase tracking-widest text-secondary hover:text-white transition-colors"
+            >
+              Login
+            </button>
+            <button
+              onClick={onSignup}
+              className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-widest text-xs rounded-lg transition-all shadow-lg hover:shadow-blue-500/25"
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
-      <main className="relative z-10 flex-1">
+      <main className="relative z-10 flex-1 pt-24">
         <div className="max-w-[1400px] mx-auto px-6 py-20 flex flex-col items-center">
 
           <div className="text-center mb-16 max-w-4xl mx-auto">
-            <div className="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/20 px-4 py-2 rounded-full mb-8 backdrop-blur-md">
-              <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">Generative AI Surveillance Platform</span>
-            </div>
+            {/* Badge Removed per user request */}
 
             <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-8 leading-[0.9]">
               Chat with your <br />
@@ -38,7 +59,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin, onSignup }) => {
                 onClick={onLogin}
                 className="group relative px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold uppercase tracking-widest text-sm rounded-xl transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_40px_rgba(37,99,235,0.5)] w-full sm:w-auto"
               >
-                Launch Console
+                Login
               </button>
               <button
                 onClick={onSignup}
